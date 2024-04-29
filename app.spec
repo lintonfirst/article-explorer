@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['app.py', 'search.py', 'RMRB.py'],
+    ['app.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -12,7 +12,6 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
-    optimize=0,
 )
 pyz = PYZ(a.pure)
 
@@ -22,14 +21,14 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='app',
+    name='高校理论文章检索器',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
