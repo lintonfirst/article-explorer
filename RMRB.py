@@ -2,8 +2,6 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-import csv
-import json
 
 def getArticles(year:str,month:str,date:str):
     url = "http://paper.people.com.cn/rmrb/html/"+year+"-"+month+"/"+date+"/nbs.D110000renmrb_01.htm"

@@ -1,7 +1,7 @@
 from RMRB import getRMRB
 import openpyxl
 
-def search(year:str,month:str,date:str):
+def search_articles(year:str,month:str,date:str,path:str):
     results,potentials=getRMRB(year,month,date)
     wb=openpyxl.Workbook()
     wb.remove(wb.active)
@@ -14,3 +14,5 @@ def search(year:str,month:str,date:str):
     ws.append(["报刊名","日期","具体版面","文章名称""链接"])
     for res in potentials:
         ws.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['url'].strip()])
+    
+    wb.save(path+"/高校理论文章检索结果{}-{}-{}.xlsx".format(year,month,date))
