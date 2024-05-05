@@ -5,7 +5,7 @@ from WHB import getWHB
 import openpyxl
 import datetime
 
-def search_articles(year:str,month:str,date:str,path:str):
+def search_articles(year:str,month:str,date:str,path:str,stepProgress:callable):
     
     # 人民日报
     results,potentials=getRMRB(year,month,date)
@@ -20,6 +20,7 @@ def search_articles(year:str,month:str,date:str,path:str):
     ps.append(["报刊名","日期","具体版面","文章名称""链接"])
     for res in potentials:
         ps.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['url'].strip()])
+    stepProgress()
     
     # 光明日报
     results,potentials=getGMRB(year,month,date)
@@ -29,6 +30,7 @@ def search_articles(year:str,month:str,date:str,path:str):
         ws.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['author'].strip(),res['unit'].strip(),res['textLength'],res['url'].strip()])
     for res in potentials:
         ps.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['url'].strip()])
+    stepProgress()
     
     # 解放日报
     results,potentials=getJFRB(year,month,date)
@@ -38,6 +40,7 @@ def search_articles(year:str,month:str,date:str,path:str):
         ws.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['author'].strip(),res['unit'].strip(),res['textLength'],res['url'].strip()])
     for res in potentials:
         ps.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['url'].strip()])
+    stepProgress()
     
     # 文汇报
     results,potentials=getWHB(year,month,date)
@@ -47,6 +50,7 @@ def search_articles(year:str,month:str,date:str,path:str):
         ws.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['author'].strip(),res['unit'].strip(),res['textLength'],res['url'].strip()])
     for res in potentials:
         ps.append([res['source'].strip(),res['date'].strip(),res['page'].strip(),res['title'].strip(),res['url'].strip()])
+    stepProgress()
     
     timestamp=datetime.datetime.now().timestamp()
     wb.save(path+"/高校理论文章检索结果{}-{}-{}-{}.xlsx".format(year,month,date,timestamp))
