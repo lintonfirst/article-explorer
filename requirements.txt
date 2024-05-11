@@ -1,0 +1,6 @@
+openpyxl
+tkinter
+tkcalendar
+requests
+bs4
+pyinstaller
