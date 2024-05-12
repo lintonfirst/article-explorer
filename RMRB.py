@@ -72,11 +72,14 @@ def getRMRB(year:str,month:str,date:str):
     results=[]
     potentials=[]
     for article in lists:
-        res,count=getAricleDetail(article)
-        if count==1:
-            results.append(res)
-        if count>1:
-            potentials.append(res)
+        try:
+            res,count=getAricleDetail(article)
+            if count==1:
+                results.append(res)
+            if count>1:
+                potentials.append(res)
+        except:
+            pass
     return results,potentials
 
 
