@@ -1,5 +1,6 @@
 # 爬取解放日报
 import requests
+import threading
 
 def getArticles(year:str,month:str,date:str):
     url="https://www.jfdaily.com/staticsg/data/journal/"+year+"-"+month+"-"+date+"/navi.json"
@@ -43,7 +44,8 @@ def getJFRB(year:str,month:str,date:str):
     lists=getArticles(year,month,date)
     results=[]
     potentials=[]
-    for article in lists:
+    threads=[]
+    def task(article):
         try:
             res,count=getAricleDetail(article)
             if count==1:
@@ -52,4 +54,10 @@ def getJFRB(year:str,month:str,date:str):
                 potentials.append(res)
         except:
             pass
+    for article in lists:
+        t=threading.Thread(target=task,args=(article,))
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
     return results,potentials

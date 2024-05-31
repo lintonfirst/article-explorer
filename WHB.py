@@ -1,6 +1,7 @@
 # 爬取文汇报
 import requests
 from bs4 import BeautifulSoup
+import threading
 
 def getArticles(year:str,month:str,date:str):
     url="https://dzb.whb.cn/{}/1/index.html".format(year+"-"+month+"-"+date)
@@ -73,7 +74,8 @@ def getWHB(year:str,month:str,date:str):
     lists=getArticles(year,month,date)
     results=[]
     potentials=[]
-    for article in lists:
+    threads=[]
+    def task(article):
         try:
             res,count=getAricleDetail(article)
             if count==1:
@@ -82,4 +84,11 @@ def getWHB(year:str,month:str,date:str):
                 potentials.append(res)
         except:
             pass
+    for article in lists:
+        thread=threading.Thread(target=task,args=(article,))
+        threads.append(thread)
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
     return results,potentials

@@ -2,6 +2,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+import threading
 
 def getArticles(year:str,month:str,date:str):
     url = "http://paper.people.com.cn/rmrb/html/"+year+"-"+month+"/"+date+"/nbs.D110000renmrb_01.htm"
@@ -66,12 +67,15 @@ def getAricleDetail(data):
     if count>1:
         return data,count
     return None,0
+
     
 def getRMRB(year:str,month:str,date:str):
     lists=getArticles(year,month,date)
     results=[]
     potentials=[]
-    for article in lists:
+    threads=[]
+    
+    def task(article):
         try:
             res,count=getAricleDetail(article)
             if count==1:
@@ -80,6 +84,15 @@ def getRMRB(year:str,month:str,date:str):
                 potentials.append(res)
         except:
             pass
+            
+    for article in lists:
+        thread=threading.Thread(target=task,args=(article,))
+        thread.start()
+        threads.append(thread)
+    
+    for thread in threads:
+        thread.join() 
+        
     return results,potentials
 
 

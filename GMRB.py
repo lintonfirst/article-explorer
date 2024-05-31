@@ -1,7 +1,7 @@
 # 爬取光明日报
 import requests
 from bs4 import BeautifulSoup
-
+import threading
 
 def getArticles(year:str,month:str,date:str):
     url="http://epaper.gmw.cn/gmrb/html/"+year+"-"+month+"/"+date+"/nbs.D110000gmrb_01.htm"
@@ -83,7 +83,9 @@ def getGMRB(year:str,month:str,date:str):
     lists=getArticles(year,month,date)
     results=[]
     potentials=[]
-    for article in lists:
+    threads=[]
+    
+    def task(article):
         try:
             res,count=getAricleDetail(article)
             if count==1:
@@ -92,4 +94,11 @@ def getGMRB(year:str,month:str,date:str):
                 potentials.append(res)
         except:
             pass
+        
+    for article in lists:
+        thread=threading.Thread(target=task,args=(article,))
+        thread.start()
+        threads.append(thread)
+    for thread in threads:
+        thread.join()
     return results,potentials
