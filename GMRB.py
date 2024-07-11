@@ -23,7 +23,7 @@ def getArticles(year:str,month:str,date:str):
         lists=soup.find('div',id='titleList')
         for article in lists.find_all('a'):
             url="http://epaper.gmw.cn/gmrb/html/"+year+"-"+month+"/"+date+"/"+article.get('href')
-            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"光明日报"})
+            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"光明日报","author":""})
     return articleLists
     
 def getAricleDetail(data):

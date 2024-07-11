@@ -26,7 +26,7 @@ def getArticles(year:str,month:str,date:str):
         lists=soup.find('ul',class_='news-list')
         for article in lists.find_all('a'):
             url="http://paper.people.com.cn/rmrb/html/"+year+"-"+month+"/"+date+"/"+article.get('href')
-            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"人民日报"})
+            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"人民日报","author":""})
             
     return articleLists
     

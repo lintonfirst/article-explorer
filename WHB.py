@@ -27,7 +27,7 @@ def getArticles(year:str,month:str,date:str):
         lists=soup.find('div',class_='title_box')
         for article in lists.find_all('a'):
             url="https://dzb.whb.cn"+article.get('href')
-            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"文汇报"})
+            articleLists.append({"title":article.get_text(),"url":url,"date":year+"-"+month+"-"+date,"page":page['title'],"source":"文汇报","author":""})
     return articleLists
 
 def getAricleDetail(data):
