@@ -6,6 +6,8 @@ import threading
 def getArticles(year:str,month:str,date:str):
     url="https://dzb.whb.cn/{}/1/index.html".format(year+"-"+month+"-"+date)
     html=requests.get(url)
+    if html.status_code!=200:
+        return []
     html.encoding='utf-8'
     soup=BeautifulSoup(html.text,'html.parser')
     #获取版面
