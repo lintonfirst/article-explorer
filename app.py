@@ -10,7 +10,7 @@ import threading
 root = tk.Tk()
 root.title("高校理论文章检索器")
 root.configure(bg="white")
-root.geometry("500x300")
+root.geometry("550x300")
 root.resizable(False, False)
 
 isRunning = False

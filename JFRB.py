@@ -66,16 +66,27 @@ def getArticles_V2(year:str,month:str,date:str):
     jsonDatas=requests.get(url).json()
     pages=jsonDatas['object']['pagelist']
     articleLists=[]
+    threads=[]
+    def task(page):
+        try:
+            pageName=page['pnumber']+"版："+page['pname']
+            pageUrl=url+"?page="+page['pnumber']
+            pageData=requests.get(pageUrl).json()
+            for article in pageData['object']['articlelist']:
+                id=article['id']
+                articleUrl="https://www.jfdaily.com/staticsg/res/html/journal/detail.html?date={}&id={}&page={}".format(year+"-"+month+"-"+date,id,page['pnumber'])
+                jsonUrl="https://www.jfdaily.com/journal/getJournalPageArticle.do?id={}".format(id)
+                author=requests.get(jsonUrl).json()['object']['article']['author']
+                articleLists.append({"title":article['title'],"url":articleUrl,"date":year+"-"+month+"-"+date,"page":pageName,"source":"解放日报","author":author,"jsonUrl":jsonUrl})
+        except:
+            pass
     for page in pages:
-        pageName=page['pnumber']+"版："+page['pname']
-        pageUrl=url+"?page="+page['pnumber']
-        pageData=requests.get(pageUrl).json()
-        for article in pageData['object']['articlelist']:
-            id=article['id']
-            articleUrl="https://www.jfdaily.com/staticsg/res/html/journal/detail.html?date={}&id={}&page={}".format(year+"-"+month+"-"+date,id,page['pnumber'])
-            jsonUrl="https://www.jfdaily.com/journal/getJournalPageArticle.do?id={}".format(id)
-            author=requests.get(jsonUrl).json()['object']['article']['author']
-            articleLists.append({"title":article['title'],"url":articleUrl,"date":year+"-"+month+"-"+date,"page":pageName,"source":"解放日报","author":author,"jsonUrl":jsonUrl})
+        t=threading.Thread(target=task,args=(page,))
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
+       
     return articleLists
 
 def getAricleDetail_V2(data):
